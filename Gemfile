@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.11'
+gem 'rack', '1.2.1' #pra ver se evito os problemas com a dreamhost
+
+gem 'inherited_resources'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

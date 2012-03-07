@@ -5,6 +5,9 @@
   <%= @photo.label %>
 </p>
 
+<%= image_tag @photo.image.url %>
+<%= image_tag @photo.image.url(:medium) %>
+<%= image_tag @photo.image.url(:thumb) %>
 
 <%= link_to 'Edit', edit_gallery_photo_path(@gallery, @photo) %> |
 <%= link_to 'Back', gallery_photos_path(@gallery) %>

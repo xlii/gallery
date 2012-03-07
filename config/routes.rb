@@ -1,4 +1,6 @@
 Gallery2::Application.routes.draw do
+  resources :unregistered_photos
+
   resources :galleries do
     resources :photos
   end

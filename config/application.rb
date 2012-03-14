@@ -38,5 +38,19 @@ module Gallery2
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    ActionView::Base.field_error_proc = Proc.new do |html_tag, instance| 
+      if html_tag =~ /<label/
+        %|<div class="fieldWithErrors">#{html_tag} <span class="error">#{[instance.error_message].join(', ')}</span></div>|.html_safe
+      else
+        html_tag
+      end
+    end
+        
+    config.to_prepare do
+      Devise::SessionsController.layout "sign"
+      Devise::PasswordsController.layout "sign"
+      Devise::RegistrationsController.layout proc{ |controller| user_signed_in? ? "application" : "sign" }
+    end
   end
 end

@@ -7,8 +7,15 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
+	<div id="user-navigation">
+    <ul>
+      <li><%= current_user.name %> [<%= current_user.email%>]</li>
+      <li><a href="/logout" class="logout">Sair</a></li>
+    </ul>
+  </div>
+	<p class="notice"><%= notice %></p>
+	<p class="alert"><%= alert %></p>
+	<%= yield %>
 
 </body>
 </html>

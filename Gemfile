@@ -6,17 +6,10 @@ gem 'rack', '1.2.1' #pra ver se evito os problemas com a dreamhost
 gem 'inherited_resources'
 gem "paperclip", "~> 2.7"
 gem "nifty-generators", :group => :development
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem "devise", "~> 1.5"
+gem 'omniauth-openid'
+gem 'capistrano'
 gem 'sqlite3'
-
-# Use unicorn as the web server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
@@ -34,4 +27,4 @@ gem 'sqlite3'
 # group :development, :test do
 #   gem 'webrat'
 # end
-gem "mocha", :group => :test
+#gem "mocha", :group => :test

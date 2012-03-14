@@ -1,9 +1,18 @@
-Gallery2::Application.routes.draw do
+Gallery2::Application.routes.draw do  
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  
+  devise_scope :user do
+    get '/users/auth/:provider' => 'users/omniauth_callbacks#passthru'
+    get "/logout" => "devise/sessions#destroy"
+  end
+  
   resources :unregistered_photos
 
   resources :galleries do
     resources :photos
   end
+  
+  root :to => 'galleries#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

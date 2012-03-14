@@ -1,0 +1,14 @@
+<div class="block" id="block-login">
+	<h2>Gallery</h2>
+	<div class="content login">
+		<div class="flash">
+			<% flash.each do |type, message|%>
+			  <div class="message <%= type %>">
+			    <p><%= message%></p>
+			  </div>
+		  <% end %>
+		</div>
+		<h3>Acesse o sistema com:</h3>				
+		<%= link_to image_tag("google.png"), user_omniauth_authorize_path(:google) %>
+	</div>
+</div>

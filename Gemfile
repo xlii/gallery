@@ -9,7 +9,14 @@ gem "nifty-generators", :group => :development
 gem "devise", "~> 1.5"
 gem 'omniauth-openid'
 gem 'capistrano'
-gem 'sqlite3'
+
+group :development do
+  gem 'sqlite3'
+end
+
+group :production do
+	gem 'mysql2', '< 0.3'
+end
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'

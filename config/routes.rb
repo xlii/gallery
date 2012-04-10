@@ -6,7 +6,7 @@ Gallery2::Application.routes.draw do
     get "/logout" => "devise/sessions#destroy"
   end
   
-  resources :unregistered_photos
+  resources :unregistered_photos, :only => :new
 
   resources :galleries do
     resources :photos

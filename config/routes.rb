@@ -9,7 +9,7 @@ Gallery2::Application.routes.draw do
   resources :unregistered_photos, :only => :new
 
   resources :galleries do
-    resources :photos
+    resources :photos, :except => :index
   end
   
   root :to => 'galleries#index'

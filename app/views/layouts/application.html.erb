@@ -13,6 +13,14 @@
       <li><a href="/logout" class="logout">Sair</a></li>
     </ul>
   </div>
+
+  <div id="menu">
+    <ul>
+      <li><a href="<%= galleries_path %>">Galerias</a></li>
+      <li><a href="<%= new_unregistered_photo_path %>">Fotos não classificadas</a></li>      
+    </ul>
+  </div>
+
 	<p class="notice"><%= notice %></p>
 	<p class="alert"><%= alert %></p>
 	<%= yield %>

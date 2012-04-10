@@ -1,6 +1,7 @@
 set :bundle_cmd, "/home/fortito/.gems/bin/bundle"
 
 require 'bundler/capistrano'
+require "#{File.dirname(__FILE__)}/deploy/capistrano_database_yml.rb"
 
 default_run_options[:pty] = true
 

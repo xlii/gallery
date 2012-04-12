@@ -1,44 +1,88 @@
+<script>
+  $(document).ready(function() {
+    $("#unregistered_photo_new_gallery_true").click(function() { 
+      $("#new_gallery_fields").show("slow");
+      $("#old_gallery_fields").hide();
+    });
+
+    $("#unregistered_photo_new_gallery_false").click(function() { 
+      $("#new_gallery_fields").hide();
+      $("#old_gallery_fields").show("slow");
+    });
+
+    $("#unregistered_photo_event").change(function() {
+       if($("#unregistered_photo_event").val() == "Outros"){
+          $("#member_field").hide();
+          $("#title_field").show('slow');
+       }
+       else{
+          $("#member_field").show('slow');
+          $("#title_field").hide();
+       }
+    });
+  });
+</script>
 <h1>Unregistered Photos</h1>
 
 <% if @image.blank? %>
   <%= "No photo unregistered" %>
 <% else %>
-  <%= form_for @unregistered_photo do |f| %>
-    <% if @unregistered_photo.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@unregistered_photo.errors.count, "error") %> prohibited this unregistered photo from being saved:</h2>
-
-        <ul>
-        <% @unregistered_photo.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
+  <%= form_tag "/unregistered_photos", :method => :post do %>    
+    <fieldset>
+      <legend>Álbum</legend>
+      <p>
+        <%= radio_button_tag "unregistered_photo[new_gallery]", true %>
+        <%= label_tag "unregistered_photo[new_gallery]", "Novo álbum" %>
+      </p>
+      <div id="new_gallery_fields" style="display:none;">
+        <p>
+          <%= label_tag "unregistered_photo[event]", "Evento:" %><br />
+          <%= select_tag "unregistered_photo[event]", options_for_select(@events) %>
+        </p>
+        <div id="member_field">
+          <p>
+            <%= label_tag "unregistered_photo[member]", "Pessoa:" %><br />
+            <% @members.each do |member|%>
+              <div><%= check_box_tag 'unregistered_photo[member][]', member %><%= label_tag 'unregistered_photo[member][]', member %></div>
+            <% end %>
+          </p>
+        </div>
+        <div id="title_field">
+          <p>
+            <%= label_tag "unregistered_photo[title]", "Título:" %><br />
+            <%= text_field_tag "unregistered_photo[title]" %>
+          </p>
+        </div>
+        <p>
+          <%= label_tag "unregistered_photo[date]", "Data:" %><br />
+          <%= date_select :unregistered_photo, :date, :order => [:day, :month, :year], :use_month_numbers => true, :start_year => 1955, :field_name => :date %>
+        </p>
       </div>
-    <% end %>
-    <p>
-      <%= f.label :event %><br />      
-      <%= f.select :event, @events %>
-    </p>
-    <p>
-      <%= f.label :member %><br />
-      <% @members.each do |member|%>
-        <div><%= check_box_tag 'unregistered_photo[member][]', member %><%= label_tag 'unregistered_photo[member][]', member %></div>
-      <% end %>
-    </p>
-    <p>
-      <%= f.label :label %><br />
-      <%= f.text_field :label %>
-    </p>
-    <p>
-      <%= f.label :date %><br />    
-      <%= f.date_select :date, :order => [:day, :month, :year], :use_month_numbers => true, :start_year => 1955, :field_name => :date %>
-    </p>
-    <p>
-      <%= f.label :image %><br />
-      <%= f.hidden_field :image, :value => @image %>
-      <%= image_tag "/system/unregistered_photos/#{@image}" %>
-    </p>
-    <p><%= f.submit %></p>
+      <p>
+        <%= radio_button_tag "unregistered_photo[new_gallery]", false, true %>
+        <%= label_tag "unregistered_photo[new_gallery]", "Álbum existente" %>
+      </p>
+      <div id="old_gallery_fields">
+        <p>
+          <%= label_tag "unregistered_photo[gallery_id]", "Álbum:" %><br />
+          <%= select_tag "unregistered_photo[gallery_id]", options_from_collection_for_select(Gallery.all, :id, :title) %>
+        </p>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Foto</legend>
+      <p>
+        <%= label_tag "unregistered_photo[label]", "Legenda:" %><br />
+        <%= text_field_tag "unregistered_photo[label]" %>
+      </p>
+      <p>
+        <%= label_tag "unregistered_photo[image]", "Imagem:" %><br />
+        <%= hidden_field_tag "unregistered_photo[image]", @image %>
+        <%= image_tag "/system/unregistered_photos/#{@image}" %>
+      </p>
+    </fieldset>
+    <p><%= submit_tag "Salvar" %></p>
   <% end %>
 <% end%>
 

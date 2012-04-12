@@ -1,35 +1,48 @@
 class UnregisteredPhotosController < ApplicationController
-  def new
-    @unregistered_photo = UnregisteredPhoto.new
+  def new    
     load_vars
   end
 
   def create
     unregistered_photo = params[:unregistered_photo]
-    title = "#{unregistered_photo[:event]}"
-    title += " de #{unregistered_photo[:member]}" unless unregistered_photo[:member].blank?    
-    date = "#{unregistered_photo['date(1i)']}-#{unregistered_photo['date(2i)']}-#{unregistered_photo['date(3i)']}".to_date
+        if unregistered_photo[:new_gallery] == "true"      
+      if unregistered_photo[:event] == "Outros"
+        title = unregistered_photo[:title]
+      else
+        title = "#{unregistered_photo[:event]}" 
+        title += " de #{unregistered_photo[:member]}" unless unregistered_photo[:member].blank?
+      end
 
-    galleries = Gallery.where(:title => title, :date => date).all
-    
-    if galleries.count == 0
-      @gallery = Gallery.create :title => title, :date => date
-    else
-      @gallery = galleries.first
-    end    
-    new_photo_file = get_image(unregistered_photo[:image])
-    unless new_photo_file.nil?
-      @photo = Photo.create :label => unregistered_photo[:label], :gallery => @gallery, :image => File.new(new_photo_file)
-      File.delete(new_photo_file) unless @photo.image.url.blank?
+      unless title.blank?
+        date = "#{unregistered_photo['date(1i)']}-#{unregistered_photo['date(2i)']}-#{unregistered_photo['date(3i)']}".to_date
+
+        galleries = Gallery.where(:title => title, :date => date).all
+        
+        if galleries.count == 0
+          @gallery = Gallery.create :title => title, :date => date
+        else
+          @gallery = galleries.first
+        end
+      end
+    else      
+      @gallery = Gallery.find unregistered_photo[:gallery_id]
     end
-    @unregistered_photo = UnregisteredPhoto.new(params[:unregistered_photo])
-    flash[:notice] = "Successfully created photo." if @unregistered_photo.valid?
+
+    if @gallery.nil?
+      flash[:notice] = "Um álbum precisa ser selecionado."
+    else
+      new_photo_file = get_image(unregistered_photo[:image])
+      unless new_photo_file.nil?
+        @photo = Photo.create :label => unregistered_photo[:label], :gallery => @gallery, :image => File.new(new_photo_file)
+        File.delete(new_photo_file) unless @photo.image.url.blank?
+      end      
+      flash[:notice] = "Successfully created photo."
+    end
     load_vars
     render :action => 'new'
   end
 
   def get_image(name=nil)
-    puts 'name'+name.inspect
     if name.nil? 
       image = Dir.glob("public/system/unregistered_photos/*").first
       unless image.nil?

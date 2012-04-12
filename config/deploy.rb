@@ -12,16 +12,11 @@ set :application, 'gallery'
 
 # the rest should be good
 set :repository,  "git://github.com/xlii/#{application}.git"
-set :deploy_to do
-  "/home/#{user}/apps/#{domain}"
-end
-set :deploy_via, :remote_cache
+set :deploy_to, "/home/#{user}/apps/#{domain}"
+set :deploy_via, :remote_cache 
 set :scm, 'git'
-
-set :branch do
-  # default_tag = `git tag`.split("\n").last
+set :branch do  
   default_tag = 'master'
-
   tag = Capistrano::CLI.ui.ask "Version to deploy (if is a tag make sure to push it first): [#{default_tag}] "
   tag = default_tag if tag.empty?
   tag

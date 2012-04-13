@@ -9,7 +9,7 @@
     <th></th>
   </tr>
 
-<% @galleries.each do |gallery| %>
+<% @galleries.order('date desc').each do |gallery| %>
   <tr>
     <td><%= gallery.title %></td>
     <td><%= gallery.date %></td>
